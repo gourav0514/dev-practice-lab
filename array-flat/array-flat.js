@@ -30,14 +30,31 @@ function flatten() {
   return result;
 }
 
+function depthflatten(depth) {
+  const result = [];
+
+  function helper(arr, currentDepth) {
+    for (const item of arr) {
+      if (Array.isArray(item) && currentDepth < depth) {
+        helper(item, currentDepth + 1);
+      } else if (!Array.isArray(item)) {
+        result.push(item);
+      }
+    }
+  }
+
+  helper(this, 0);
+  return result;
+}
+
 function Arrayflat() {
   return this.toString()
     .split(",")
     .map((item) => Number(item));
 }
 
-Array.prototype.flatten = Arrayflat;
-console.log(input.flatten());
+Array.prototype.flatten = depthflatten;
+console.log(input.flatten(3));
 
 //  follow up
 // 1) We can have a depth till that depth you need to flatten the array. For example, if depth is 2, then we will flatten the array till depth 2 and if depth is 3, then we will flatten the array till depth 3 and so on.
